@@ -21,6 +21,7 @@ export class HeroService {
               private messageService: MessageService) {
   }
 
+  /** GET heroes from the server */
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl).pipe(
       tap(() => this.log('fetched heroes')),
@@ -39,6 +40,19 @@ export class HeroService {
     );
 
   }
+
+  searchHeroes(term: string): Observable<Hero[]> {
+
+    if (!term.trim()) {
+      // 没有搜索关键词,返回空数组
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
+      tap(() => this.log(`搜素英雄,关键词是 ${term}`)),
+      catchError(this.handleError<Hero[]>('searchHeroes', []))
+    );
+  }
+
 
   /** PUT: update the hero on the server */
   updateHero(hero: Hero): Observable<any> {
@@ -59,6 +73,7 @@ export class HeroService {
       );
   }
 
+  /** DELETE: delete the hero from the server */
   deleteHero(hero: Hero | number): Observable<Hero> {
 
     const id = typeof hero === 'number' ? hero : hero.id;
