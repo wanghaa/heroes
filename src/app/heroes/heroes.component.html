@@ -1,4 +1,4 @@
-<h2>My heroes</h2>
+<h2>我的英雄们</h2>
 <ul class="heroes">
   <li *ngFor="let hero of heroes">
     <a routerLink="/detail/{{hero.id}}">
@@ -6,5 +6,13 @@
     </a>
   </li>
 </ul>
-
-<app-hero-detail [hero]="selectedHero"></app-hero-detail>
+<div>
+  <label>英雄姓名:
+    <input #heroName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(heroName.value); heroName.value=''">
+    添加
+  </button>
+</div>
+<!--<app-hero-detail [hero]="selectedHero"></app-hero-detail>-->

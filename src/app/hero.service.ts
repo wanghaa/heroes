@@ -48,6 +48,16 @@ export class HeroService {
     );
   }
 
+  /** POST: add a new hero to the server */
+  addHero(hero: Hero) {
+
+    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions)
+      .pipe(
+        tap(() => this.log(`add hero id=${hero.id}`)),
+        catchError(this.handleError<Hero>('addHero'))
+      );
+  }
+
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
     this.messageService.add('HeroService: ' + message);
